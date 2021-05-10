@@ -1,0 +1,10 @@
+package gamecompanydemo.business.abstracts;
+
+import gamecompanydemo.entities.concretes.Player;
+
+public interface PlayerService {
+
+	void add(Player player);
+	void delete (Player player);
+	void update(Player player);
+}
