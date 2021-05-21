@@ -13,7 +13,7 @@ public class UserManager implements UserService {
 
 	private UserDao userDao;
 	private GoogleEmailService googleEmailService;
-	
+
 	public UserManager(UserDao userDao, GoogleEmailService googleEmailService) {
 		super();
 		this.userDao = userDao;
@@ -23,19 +23,17 @@ public class UserManager implements UserService {
 	@Override
 	public void add(User user) {
 		var result = checkNameLenght(user);
-		var mail=getByMail(user.getEmail());
-		if (result != false 
-				&&mail==null
-				&&Regex.emailValidate(user.getEmail())) {
+		var mail = getByMail(user.getEmail());
+		if (result != false && mail == null && Regex.emailValidate(user.getEmail())) {
 			userDao.add(user);
 			System.out.println("Activation mail sent");
-			googleEmailService.send(user.getEmail(),user.getPassword());
+			googleEmailService.send(user.getEmail(), user.getPassword());
 		} else {
 			System.out.println("Try again");
 		}
 
 	}
-     
+
 	@Override
 	public User getByMail(String email) {
 		return userDao.getByEmail(email);
@@ -56,11 +54,11 @@ public class UserManager implements UserService {
 		}
 		return userDao.getAll();
 	}
-	
+
 	@Override
 	public void register(User user) {
-		if (userCheckIfNull(user) && userExists(user.getEmail())
-				&& checkIfPassword(user.getPassword()) && Regex.emailValidate(user.getEmail())) {
+		if (userCheckIfNull(user) && userExists(user.getEmail()) && checkIfPassword(user.getPassword())
+				&& Regex.emailValidate(user.getEmail())) {
 			userDao.add(user);
 		} else {
 			System.out.println("Registered is failed.");
@@ -69,19 +67,17 @@ public class UserManager implements UserService {
 	}
 
 	@Override
-	public boolean login(String email,String password) {
-	    for (User user:userDao.getAll()) {
-	    if (user.getEmail().equals(email) && user.getPassword().equals(password)
-				&& loginNullControl(email,password)) {
-		System.out.println("Login successful :"+user.getEmail());
-	    return true;
-		} 
-	    }
-	    System.out.println("Login Failed");
-	    return false;
+	public boolean login(String email, String password) {
+		for (User user : userDao.getAll()) {
+			if (user.getEmail().equals(email) && user.getPassword().equals(password)
+					&& loginNullControl(email, password)) {
+				System.out.println("Login successful :" + user.getEmail());
+				return true;
+			}
+		}
+		System.out.println("Login Failed");
+		return false;
 	}
-
-
 
 	@Override
 	public boolean userExists(String email) {
@@ -112,7 +108,7 @@ public class UserManager implements UserService {
 		return false;
 	}
 
-	public boolean loginNullControl(String email,String password) {
+	public boolean loginNullControl(String email, String password) {
 		if (!email.isEmpty() && !password.isEmpty()) {
 			return true;
 		}
